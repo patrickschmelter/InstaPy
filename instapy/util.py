@@ -356,7 +356,7 @@ def validate_username(
                     )
                     return False, inap_msg
         except (WebDriverException, TypeError):  # Catch if number_of_posts is NoneType
-            logger.error("~cannot get number of posts for username".format(username))
+            logger.error("~cannot get number of posts for username: '{}'".format(username))
             inap_msg = "--> Sorry, couldn't check for number of posts of username: '{}'\n".format(
                 username
             )
@@ -1136,6 +1136,8 @@ def format_number(number):
         r"(m)$", "00000" if "." in formatted_num else "000000", formatted_num
     )
     formatted_num = formatted_num.replace(".", "")
+    formatted_num = formatted_num.replace("\n", "")
+    formatted_num = re.sub("[A-Za-z]","",formatted_num)
     return int(formatted_num)
 
 
@@ -2651,7 +2653,8 @@ def get_shared_data(browser):
     :return shared_data: Json data from window._sharedData extracted from page source
     """
     shared_data = None
-    browser.get('view-source:'+ browser.current_url +'?__a=1&__d=dis')
+    if not '?__a=1&__d=dis' in browser.current_url:
+        browser.get('view-source:'+ browser.current_url +'?__a=1&__d=dis')
     text = browser.find_element(By.TAG_NAME, "pre").text
     shared_data = json.loads(re.search("{.*}", text).group())
 

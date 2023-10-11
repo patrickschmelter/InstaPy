@@ -345,76 +345,76 @@ def get_links_for_tag(browser, tag, amount, skip_top_posts, randomize, media, lo
     # Get links
     links = get_links(browser, tag, logger, media, main_elem)
     # Disabling this are there are only 9 "Top Posts" now
-    filtered_links = 1
-    try_again = 0
-    sc_rolled = 0
-    nap = 1.5
-    put_sleep = 0
-    try:
-        while filtered_links in range(1, amount):
-            if sc_rolled > 100:
-                logger.info("Scrolled too much! ~ sleeping a bit :>")
-                sleep(600)
-                sc_rolled = 0
+    # filtered_links = 1
+    # try_again = 0
+    # sc_rolled = 0
+    # nap = 1.5
+    # put_sleep = 0
+    # try:
+    #     while filtered_links in range(1, amount):
+    #         if sc_rolled > 100:
+    #             logger.info("Scrolled too much! ~ sleeping a bit :>")
+    #             sleep(600)
+    #             sc_rolled = 0
 
-            for i in range(3):
-                browser.execute_script(
-                    "window.scrollTo(0, document.body.scrollHeight);"
-                )
-                update_activity(browser, state=None)
-                sc_rolled += 1
-                sleep(nap)  # if not slept, and internet speed is low,
-                # instagram will only scroll one time, instead of many times
-                # you sent scroll command...
+    #         for i in range(3):
+    #             browser.execute_script(
+    #                 "window.scrollTo(0, document.body.scrollHeight);"
+    #             )
+    #             update_activity(browser, state=None)
+    #             sc_rolled += 1
+    #             sleep(nap)  # if not slept, and internet speed is low,
+    #             # instagram will only scroll one time, instead of many times
+    #             # you sent scroll command...
 
-            sleep(3)
-            links.extend(get_links(browser, tag, logger, media, main_elem))
+    #         sleep(3)
+    #         links.extend(get_links(browser, tag, logger, media, main_elem))
 
-            links_all = links  # uniqify links while preserving order
-            s = set()
-            links = []
-            for i in links_all:
-                if i not in s:
-                    s.add(i)
-                    links.append(i)
+    #         links_all = links  # uniqify links while preserving order
+    #         s = set()
+    #         links = []
+    #         for i in links_all:
+    #             if i not in s:
+    #                 s.add(i)
+    #                 links.append(i)
 
-            if len(links) == filtered_links:
-                try_again += 1
-                nap = 3 if try_again == 1 else 5
-                logger.info(
-                    "Insufficient amount of links ~ trying again: {}".format(try_again)
-                )
-                sleep(3)
+    #         if len(links) == filtered_links:
+    #             try_again += 1
+    #             nap = 3 if try_again == 1 else 5
+    #             logger.info(
+    #                 "Insufficient amount of links ~ trying again: {}".format(try_again)
+    #             )
+    #             sleep(3)
 
-                if try_again > 2:  # you can try again as much as you want
-                    # by changing this number
-                    if put_sleep < 1 and filtered_links <= 21:
-                        logger.info(
-                            "Cor! Did you send too many requests?  ~let's rest some"
-                        )
-                        sleep(600)
-                        put_sleep += 1
+    #             if try_again > 2:  # you can try again as much as you want
+    #                 # by changing this number
+    #                 if put_sleep < 1 and filtered_links <= 21:
+    #                     logger.info(
+    #                         "Cor! Did you send too many requests?  ~let's rest some"
+    #                     )
+    #                     sleep(600)
+    #                     put_sleep += 1
 
-                        browser.execute_script("location.reload()")
-                        update_activity(browser, state=None)
-                        try_again = 0
-                        sleep(10)
+    #                     browser.execute_script("location.reload()")
+    #                     update_activity(browser, state=None)
+    #                     try_again = 0
+    #                     sleep(10)
 
-                        main_elem = get_main_element(
-                            browser, link_elems, skip_top_posts
-                        )
-                    else:
-                        logger.info(
-                            "'{}' tag POSSIBLY has less images than "
-                            "desired:{} found:{}...".format(tag, amount, len(links))
-                        )
-                        break
-            else:
-                filtered_links = len(links)
-                try_again = 0
-                nap = 1.5
-    except Exception:
-        raise
+    #                     main_elem = get_main_element(
+    #                         browser, link_elems, skip_top_posts
+    #                     )
+    #                 else:
+    #                     logger.info(
+    #                         "'{}' tag POSSIBLY has less images than "
+    #                         "desired:{} found:{}...".format(tag, amount, len(links))
+    #                     )
+    #                     break
+    #         else:
+    #             filtered_links = len(links)
+    #             try_again = 0
+    #             nap = 1.5
+    # except Exception:
+    #     raise
 
     sleep(4)
 
@@ -850,16 +850,15 @@ def get_links(browser, page, logger, media, element):
             for link_elem in link_elems:
                 try:
                     post_href = link_elem.get_attribute("href")
-                    post_elem = element.find_elements(
+                    post_elem_aria = element.find_element(
                         By.XPATH,
-                        "//a[@href='/p/" + post_href.split("/")[-2] + "/']/child::div",
+                        "//a[@href='/p/" + post_href.split("/")[-2] + "/']/div[2]",
                     )
 
-                    if len(post_elem) == 1 and MEDIA_PHOTO in media:
+                    if not post_elem_aria.get_attribute('innerHTML') and MEDIA_PHOTO in media:
                         logger.info("Found media type: {}".format(MEDIA_PHOTO))
                         links.append(post_href)
-
-                    if len(post_elem) == 2:
+                    else:
                         logger.info(
                             "Found media type: {} - {} - {}".format(
                                 MEDIA_CAROUSEL, MEDIA_VIDEO, MEDIA_IGTV
@@ -873,7 +872,7 @@ def get_links(browser, page, logger, media, element):
                             By.XPATH,
                             "//a[@href='/p/"
                             + post_href.split("/")[-2]
-                            + "/']/div[contains(@class,'_aatp')]/child::*/*[name()='svg']",
+                            + "/']/div[2]/div[1]/child::*/*[name()='svg']",
                         ).get_attribute("aria-label")
 
                         logger.info("Post category: {}".format(post_category))

@@ -3,7 +3,7 @@
 # Types, they must be dynamic to reduce errors.
 MEDIA_PHOTO = "Photo"
 MEDIA_CAROUSEL = "Carousel"
-MEDIA_VIDEO = "Video"
+MEDIA_VIDEO = "Clip"
 MEDIA_IGTV = "IGTV"
 MEDIA_CLIP = "Clip"
 MEDIA_ALL_TYPES = (MEDIA_PHOTO, MEDIA_CAROUSEL, MEDIA_VIDEO, MEDIA_IGTV, MEDIA_CLIP)

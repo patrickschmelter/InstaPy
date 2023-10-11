@@ -75,6 +75,18 @@ def comment_image(browser, username, comments, blacklist, logger, logfolder):
 
     rand_comment = random.choice(comments).format(username)
     rand_comment = emoji.demojize(rand_comment)
+    # TODO
+    # Exception has occurred: TypeError
+    #     emojize() got an unexpected keyword argument 'use_aliases'
+    #     File "/Users/patrickschmelter/Downloads/InstaPy-master/instapy/comment_util.py", line 78, in comment_image
+    #         rand_comment = emoji.emojize(rand_comment, use_aliases=True)
+    #     File "/Users/patrickschmelter/Downloads/InstaPy-master/instapy/comment_util.py", line 458, in process_comments
+    #         comment_state, _ = comment_image(
+    #     File "/Users/patrickschmelter/Downloads/InstaPy-master/instapy/instapy.py", line 2056, in like_by_tags
+    #         success = process_comments(
+    #     File "/Users/patrickschmelter/Downloads/InstaPy-master/start.py", line 237, in <module>
+    #         session.like_by_tags(like_tags, amount=3) # explore page currently shows only 28 tiles, check again later
+    #     TypeError: emojize() got an unexpected keyword argument 'use_aliases'
     rand_comment = emoji.emojize(rand_comment, use_aliases=True)
 
     open_comment_section(browser, logger)
@@ -363,18 +375,19 @@ def verify_commented_image(browser, link, owner, logger):
     try:
         commenter = None
         comment = None
-        data = getMediaData("edge_media_to_parent_comment", browser)
-        for value in data["edges"]:
-            commenter = value["node"]["owner"]["username"]
-            comment = value["node"]["text"]
+        # TODO no graphql media data here, check for us previously commenting on that image
+        # data = getMediaData("edge_media_to_parent_comment", browser)
+        # for value in data["edges"]:
+        #     commenter = value["node"]["owner"]["username"]
+        #     comment = value["node"]["text"]
 
-            if commenter and commenter == owner:
-                message = (
-                    "--> The post has already been commented on before: '{}'".format(
-                        comment
-                    )
-                )
-                return True, message
+        #     if commenter and commenter == owner:
+        #         message = (
+        #             "--> The post has already been commented on before: '{}'".format(
+        #                 comment
+        #             )
+        #         )
+        #         return True, message
 
     except NoSuchElementException:
         # Cannot be determined if the post has been comment by InstaPy user,

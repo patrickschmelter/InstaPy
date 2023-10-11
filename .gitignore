@@ -119,3 +119,5 @@ Pipfile.lock
 
 # Instances
 z_*
+
+start.py
