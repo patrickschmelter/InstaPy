@@ -48,6 +48,7 @@ from .util import (
     truncate_float,
     update_activity,
     web_address_navigator,
+    getUserData
 )
 from .xpath import read_xpath
 
@@ -610,7 +611,9 @@ def follow_user(browser, track, login, user_name, button, blacklist, logger, log
     )
 
     # get user ID to record alongside username
-    user_id = get_user_id(browser, track, user_name, logger)
+    # TODO-PAT doesnt work
+    # user_id = get_user_id(browser, track, user_name, logger)
+    user_id = user_name
 
     logtime = datetime.now().strftime("%Y-%m-%d %H:%M")
     log_followed_pool(login, user_name, logger, logfolder, logtime, user_id)

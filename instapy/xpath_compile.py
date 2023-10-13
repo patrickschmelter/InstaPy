@@ -33,7 +33,7 @@ xpath["class_selectors"] = {
     "likes_dialog_close_xpath": "//*[*[local-name()='svg']/@aria-label='Close']",
 }
 
-xpath["confirm_unfollow"] = {"button_xp": "//button[text()='Unfollow']"}
+xpath["confirm_unfollow"] = {"button_xp": "//button/div/div[text()='Unfollow']"}
 
 xpath["dialog_username_extractor"] = {"person": "../../*"}
 
@@ -76,12 +76,12 @@ xpath["get_active_users"] = {
 }
 
 xpath["get_buttons_from_dialog"] = {
-    "follow_button": "//button[text()='Follow']",
-    "unfollow_button": "//button[text() = 'Following']",
+    "follow_button": "//button/div/div[text()='Follow']",
+    "unfollow_button": "//button/div/div[text() = 'Following']",
 }
 
 xpath["get_comment_input"] = {
-    "comment_input": "//form/textarea",
+    "comment_input": "//form/div/textarea",
     "placeholder": '//textarea[@Placeholder = "Add a comment…"]',
 }
 
@@ -95,7 +95,7 @@ xpath["get_comments_on_post"] = {
 xpath["get_cord_location"] = {"json_text": "//body"}
 
 xpath["get_following_status"] = {
-    "follow_button_XP": "//button[text()='Following' or \
+    "follow_button_XP": "//button/div/div[text()='Following' or \
                                   text()='Requested' or \
                                   text()='Follow' or \
                                   text()='Follow Back' or \
@@ -188,7 +188,7 @@ xpath["login_user"] = {
 }
 
 xpath["open_comment_section"] = {
-    "comment_elem": "//button/div[*[local-name()='svg']/@aria-label='Comment']"
+    "comment_elem": "//div/div[*[local-name()='svg']/@aria-label='Comment']"
 }
 
 xpath["unfollow"] = {
@@ -210,4 +210,4 @@ xpath["likers_from_photo"] = {
     "second_counter_button": "//a[contains(@href,'liked_by')]",
 }
 
-xpath["accept_igcookie_dialogue"] = {"accept_button": "//button[text()='Accept']"}
+xpath["accept_igcookie_dialogue"] = {"accept_button": "//button[text()='Allow all cookies']"}

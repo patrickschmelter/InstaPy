@@ -83,12 +83,14 @@ def is_private_profile(browser, logger, following=True):
 
         # Sometimes shared_data["entry_data"]["ProfilePage"][0] is empty, but get_additional_data()
         # fetches all data needed
-        get_key = shared_data.get("entry_data").get("ProfilePage")
+        get_key = None
+        if ("entry_data" in shared_data):
+            get_key = shared_data.get("entry_data").get("ProfilePage")
 
         if get_key:
             data = get_key[0]
         else:
-            data = get_additional_data(browser)
+            data = shared_data
     finally:
         is_private = data["graphql"]["user"]["is_private"]
 
@@ -1722,9 +1724,11 @@ def find_user_id(browser, track, username, logger):
     logger.info(
         "Attempting to find user ID: Track: {}, Username {}".format(track, username)
     )
+    
     if track in ["dialog", "profile"]:
         query = "return window.__additionalData[Object.keys(window.__additionalData)[0]].data.graphql.user.id"
-
+    
+    # TODO-PAT data not on page
     elif track == "post":
         query = "return window._sharedData.entry_data.ProfilePage[0].graphql.user.id"
         meta_XP = read_xpath(find_user_id.__name__, "meta_XP")
@@ -2653,9 +2657,11 @@ def get_shared_data(browser):
     :return shared_data: Json data from window._sharedData extracted from page source
     """
     shared_data = None
+    previous_url = browser.current_url
     if not '?__a=1&__d=dis' in browser.current_url:
         browser.get('view-source:'+ browser.current_url +'?__a=1&__d=dis')
     text = browser.find_element(By.TAG_NAME, "pre").text
     shared_data = json.loads(re.search("{.*}", text).group())
+    browser.get(previous_url)
 
     return shared_data
