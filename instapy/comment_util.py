@@ -364,6 +364,7 @@ def verify_commented_image(browser, link, owner, logger):
         comment = None
         # TODO-PAT no graphql media data here, check for us previously commenting on that image
         # need to click the view comments button and grab the html element and extract usernames
+        # or maybe check if image was liked? could be the indicator that we already interacted with this image
         # data = getMediaData("edge_media_to_parent_comment", browser)
         # for value in data["edges"]:
         #     commenter = value["node"]["owner"]["username"]
