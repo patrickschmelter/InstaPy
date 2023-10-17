@@ -48,7 +48,7 @@ xpath["dismiss_notification_offer"] = {
 }
 
 xpath["dismiss_save_information"] = {
-    "offer_elem_loc": "//*[contains(text(), 'Save Info')]", # TODO-PAT doesn't work
+    "offer_elem_loc": "//*[contains(text(), 'Save Info')]",
     "dismiss_elem_loc": "//*[contains(text(), 'Not Now')]",
 }
 

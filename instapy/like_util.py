@@ -798,6 +798,8 @@ def like_image(browser, username, blacklist, logger, logfolder, total_liked_img)
             logger.info("--> {} already liked!".format(media))
             return False, "already liked"
 
+    # TODO-PAT sometimes the site remains white, we need to sleep some time (error 429 too many requests)
+    # maybe it would be better to like the images without going to the url? i.e. doubletap in feed and explore?
     logger.info("--> Invalid Like Element!")
 
     return False, "invalid element"
