@@ -92,6 +92,11 @@ def get_following_status(
 
     return following_status, follow_button
 
+def get_unfollow_button(browser):
+    unfollow_button = browser.find_element(
+        By.XPATH, read_xpath(get_unfollow_button.__name__, "unfollow_button_XP")
+    )
+    return unfollow_button
 
 def verify_username_by_id(browser, username, person, person_id, logger, logfolder):
     """Check if the given user has changed username after the time of

@@ -103,6 +103,10 @@ xpath["get_following_status"] = {
     "follow_span_XP_following": "//button/div/span[contains(@aria-label, 'Following')]",
 }
 
+xpath["get_unfollow_button"] = {
+    "unfollow_button_XP": "//*[contains(@class,'x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1')]/div/div/div/div/div/div/span/span[text()='Unfollow']",
+}
+
 xpath["get_follow_requests"] = {
     "list_of_users": "//section/div",
     "view_more_button": "//button[text()='View More']",

@@ -19,6 +19,7 @@ from selenium.webdriver.common.by import By
 from .database_engine import get_database
 from .event import Event
 from .follow_util import get_following_status
+from .follow_util import get_unfollow_button
 from .print_log_writer import (
     get_log_time,
     log_followed_pool,
@@ -1322,8 +1323,11 @@ def unfollow_user(
         )
 
         if following_status in ["Following", "Requested"]:
-            click_element(browser, follow_button)  # click to unfollow
+            click_element(browser, follow_button)  # click to open unfollow dialogue
             sleep(4)  # TODO: use explicit wait here
+            unfollow_button = get_unfollow_button(browser)
+            click_element(browser, unfollow_button)  # click to unfollow
+            sleep(7)  # TODO: use explicit wait here
             confirm_unfollow(browser)
             unfollow_state, msg = verify_action(
                 browser,
